@@ -23,51 +23,51 @@ INPUT_DIR_TYPE = click.Path(exists=True, file_okay=False)
 @click.argument('dicom-mask-dir', type=INPUT_DIR_TYPE)
 @click.option('--debug/--no-debug', default=False, help='put output dirs in mounted volume')
 def main(dicom_dir, dicom_mask_dir, debug):
-  import arterys
+    import arterys
 
-  # Custom I/O setup
-  dicom_dir = Path(dicom_dir)
-  dicom_mask_dir = Path(dicom_mask_dir)
+    # Custom I/O setup
+    dicom_dir = Path(dicom_dir)
+    dicom_mask_dir = Path(dicom_mask_dir)
 
-  volumes_dir = dicom_dir.parent if debug else VOLUMES_DIR
-  volumes_dir.mkdir(exist_ok=True)
+    volumes_dir = dicom_dir.parent if debug else VOLUMES_DIR
+    volumes_dir.mkdir(exist_ok=True)
 
-  input_volume_stem = 'input_volume'
-  input_volume_name = input_volume_stem + '.nrrd'
-  input_volume_path = volumes_dir / input_volume_name
+    input_volume_stem = 'input_volume'
+    input_volume_name = input_volume_stem + '.nrrd'
+    input_volume_path = volumes_dir / input_volume_name
 
-  input_volume_mask_stem = 'input_volume_seg'
-  input_volume_mask_name = input_volume_mask_stem + '.nrrd'
-  input_volume_mask_path = volumes_dir / input_volume_mask_name
+    input_volume_mask_stem = 'input_volume_seg'
+    input_volume_mask_name = input_volume_mask_stem + '.nrrd'
+    input_volume_mask_path = volumes_dir / input_volume_mask_name
 
-  output_volume_name = input_volume_stem + '{}_needle_seg.nrrd'
-  output_volume_path = volumes_dir / output_volume_name
+    output_volume_name = input_volume_stem + '{}_needle_seg.nrrd'
+    output_volume_path = volumes_dir / output_volume_name
 
-  # DICOM to volumes
-  arterys.dicomvert(dicom_dir, input_volume_path)
-  arterys.dicomvert(dicom_mask_dir, input_volume_mask_path)
+    # DICOM to volumes
+    arterys.dicomvert(dicom_dir, input_volume_path)
+    arterys.dicomvert(dicom_mask_dir, input_volume_mask_path)
 
-  # Run inference
-  cmdline = (
-    'python3', '/deepinfer/fit.py',
-    '--ModelName', 'prostate-needle-finder',
-    '--InputVolume', input_volume_path,
-    '--InputProstateMask', input_volume_mask_path,
-    '--OutputLabel', output_volume_path,
-    '--OutputFiducialList', '/tmp.fcsv',
-    '--InferenceType', 'Single',
-    '--verbose',
-  )
-  cmdline = [str(arg) for arg in cmdline]
-  call(cmdline)
+    # Run inference
+    cmdline = (
+        'python3', '/deepinfer/fit.py',
+        '--ModelName', 'prostate-needle-finder',
+        '--InputVolume', input_volume_path,
+        '--InputProstateMask', input_volume_mask_path,
+        '--OutputLabel', output_volume_path,
+        '--OutputFiducialList', '/tmp.fcsv',
+        '--InferenceType', 'Single',
+        '--verbose',
+    )
+    cmdline = [str(arg) for arg in cmdline]
+    call(cmdline)
 
-  # Volumes to Arterys format
-  output_dir = dicom_dir.parent / OUTPUT_DIR.name if debug else OUTPUT_DIR
-  output_dir.mkdir(exist_ok=True)
-  arterys.process_output(output_volume_path, output_dir)
+    # Volumes to Arterys format
+    output_dir = dicom_dir.parent / OUTPUT_DIR.name if debug else OUTPUT_DIR
+    output_dir.mkdir(exist_ok=True)
+    arterys.process_output(output_volume_path, output_dir)
 
-  return 0
+    return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+        sys.exit(main())    # pragma: no cover
