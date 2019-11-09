@@ -7,9 +7,12 @@ from pathlib import Path
 from subprocess import call
 
 
-# Generic I/O setup
+## Generic I/O setup
+# VOLUMES_DIR is where intermediate files (NIfTI, NNRD) are saved
 VOLUMES_DIR = Path('/volumes')
 VOLUMES_DIR.mkdir(exist_ok=True)
+
+# OUTPUT_DIR is where the JSON and binary files are written
 OUTPUT_DIR = Path('/output')
 OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -18,8 +21,9 @@ INPUT_DIR_TYPE = click.Path(exists=True, file_okay=False)
 
 
 @click.command()
-@click.argument('dicom-dir', nargs=1, type=INPUT_DIR_TYPE)
-def main(dicom_dir):
+@click.argument('dicom-dir', type=INPUT_DIR_TYPE)
+@click.option('--debug/--no-debug', default=False, help='put output dir in input parent')
+def main(dicom_dir, debug):
   import arterys
 
   # Custom I/O setup
@@ -46,7 +50,8 @@ def main(dicom_dir):
   call(cmdline)
 
   # Volumes to Arterys format
-  arterys.process_output(output_volume_path, OUTPUT_DIR)
+  output_dir = dicom_dir.parent if debug else OUTPUT_DIR
+  arterys.process_output(output_volume_path, output_dir)
 
   return 0
 
