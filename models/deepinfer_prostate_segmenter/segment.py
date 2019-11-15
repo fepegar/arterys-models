@@ -47,6 +47,7 @@ def main(dicom_dir, debug):
         '--verbose',
     )
     cmdline = [str(arg) for arg in cmdline]
+    arterys.utils.print_command(cmdline)
     call(cmdline)
 
     # Volumes to Arterys format
