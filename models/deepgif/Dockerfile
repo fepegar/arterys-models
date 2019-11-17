@@ -7,10 +7,10 @@ ENV LANG C.UTF-8
 
 # Install arterys library
 RUN apt-get update && apt-get install -y python3 python3-pip git
-RUN pip install --upgrade pip
-RUN pip install git+https://github.com/fepegar/arterys#egg=arterys
-RUN pip install torch
-RUN pip install highresnet
+RUN pip3 install --upgrade pip
+RUN pip3 install git+https://github.com/fepegar/arterys#egg=arterys
+RUN pip3 install torch
+RUN pip3 install highresnet
 
 EXPOSE 8000
 ENTRYPOINT ["python3", "/opt/segment.py"]
