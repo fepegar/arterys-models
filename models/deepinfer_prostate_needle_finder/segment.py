@@ -53,7 +53,6 @@ def main(dicom_dir, prostate_mask, debug):
     input_volume_name = input_volume_stem + '.nrrd'
     input_volume_path = volumes_dir / input_volume_name
 
-
     output_volume_name = input_volume_stem + '{}_needle_seg.nrrd'
     output_volume_path = volumes_dir / output_volume_name
 
