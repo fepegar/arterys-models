@@ -38,6 +38,7 @@ def main(dicom_dir, debug):
     # Run inference
     cmdline = (
         'deepgif', input_volume_path,
+        '--output-path', output_volume_path,
         '--hist-niftynet',
     )
     cmdline = [str(arg) for arg in cmdline]
