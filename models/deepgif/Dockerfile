@@ -9,8 +9,8 @@ ENV LANG C.UTF-8
 RUN apt-get update && apt-get install -y python3 python3-pip git
 RUN pip3 install --upgrade pip
 RUN pip3 install git+https://github.com/fepegar/arterys#egg=arterys
-RUN pip3 install torch
-RUN pip3 install highresnet
+RUN pip3 install torch==1.3.0
+RUN pip3 install highresnet==0.10.0
 
 EXPOSE 8000
 ENTRYPOINT ["python3", "/opt/segment.py"]
