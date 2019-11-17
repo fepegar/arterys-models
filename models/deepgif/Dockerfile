@@ -6,11 +6,20 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
 # Install arterys library
-RUN apt-get update && apt-get install -y python3 python3-pip git
-RUN pip3 install --upgrade pip
-RUN pip3 install git+https://github.com/fepegar/arterys#egg=arterys
-RUN pip3 install torch==1.3.0
-RUN pip3 install highresnet==0.10.0
+RUN apt-get update && apt-get install -y git curl
+
+# Install Conda
+RUN curl -LO http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+RUN bash Miniconda3-latest-Linux-x86_64.sh -p /miniconda -b
+RUN rm Miniconda3-latest-Linux-x86_64.sh
+ENV PATH=/miniconda/bin:${PATH}
+RUN conda update -y conda
+RUN conda install python=3.6 -y
+
+RUN pip install --upgrade pip
+RUN pip install git+https://github.com/fepegar/arterys#egg=arterys
+RUN pip install torch==1.3.0
+RUN pip install highresnet==0.10.0
 
 EXPOSE 8000
-ENTRYPOINT ["python3", "/opt/segment.py"]
+ENTRYPOINT ["/miniconda/bin/python", "/opt/segment.py"]
