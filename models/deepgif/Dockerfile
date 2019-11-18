@@ -18,7 +18,7 @@ RUN conda install python=3.6 -y
 
 RUN pip install --upgrade pip
 RUN pip install git+https://github.com/fepegar/arterys#egg=arterys
-RUN pip install torch==1.3.0
+RUN pip install torch==1.3.1+cu92 -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip install highresnet==0.10.0
 
 EXPOSE 8000
