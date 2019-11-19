@@ -22,7 +22,11 @@ INPUT_DIR_TYPE = click.Path(exists=True, file_okay=False)
 @click.argument('dicom-dir', type=INPUT_DIR_TYPE)
 @click.option('--debug/--no-debug', default=False, help='put output dirs in mounted volume')
 def main(dicom_dir, debug):
+    import torch
     import arterys
+
+    if not torch.cuda.is_available():
+        click.secho('CUDA is not available. Using CPU...', fg='red')
 
     # Custom I/O setup
     dicom_dir = Path(dicom_dir)
