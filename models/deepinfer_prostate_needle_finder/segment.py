@@ -39,7 +39,6 @@ def main(dicom_dir, prostate_mask, debug):
     prostate-mask is a path to a directory containing a DICOM series
     or to an NRRD file.
     """
-
     import arterys
 
     ## Custom I/O setup
@@ -49,11 +48,11 @@ def main(dicom_dir, prostate_mask, debug):
     volumes_dir = dicom_dir.parent if debug else VOLUMES_DIR
     volumes_dir.mkdir(exist_ok=True)
 
-    input_volume_stem = 'input_volume'
+    input_volume_stem = dicom_dir.name
     input_volume_name = input_volume_stem + '.nrrd'
     input_volume_path = volumes_dir / input_volume_name
 
-    output_volume_name = input_volume_stem + '{}_needle_seg.nrrd'
+    output_volume_name = input_volume_stem + '_processed_needle_seg.nrrd'
     output_volume_path = volumes_dir / output_volume_name
 
     ## DICOM to volumes
@@ -63,7 +62,7 @@ def main(dicom_dir, prostate_mask, debug):
     # Prostate mask
     if prostate_mask.is_dir():
         dicom_mask_dir = prostate_mask
-        input_volume_mask_stem = 'input_volume_seg'
+        input_volume_mask_stem = 'input_seg'
         input_volume_mask_name = input_volume_mask_stem + '.nrrd'
         input_volume_mask_path = volumes_dir / input_volume_mask_name
         arterys.dicomvert(dicom_mask_dir, input_volume_mask_path)
@@ -78,7 +77,7 @@ def main(dicom_dir, prostate_mask, debug):
         '--InputProstateMask', input_volume_mask_path,
         '--OutputLabel', output_volume_path,
         '--OutputFiducialList', '/tmp.fcsv',
-        '--InferenceType', 'Single',
+        '--InferenceType', 'Ensemble',
         '--verbose',
     )
     cmdline = [str(arg) for arg in cmdline]
@@ -94,4 +93,4 @@ def main(dicom_dir, prostate_mask, debug):
 
 
 if __name__ == "__main__":
-        sys.exit(main())    # pragma: no cover
+    sys.exit(main())    # pragma: no cover
