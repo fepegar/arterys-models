@@ -76,6 +76,7 @@ def filter_segmentation(
     Hack for RSNA demo to avoid massive output folder
     """
     import numpy as np
+    from tqdm import tqdm
     import SimpleITK as sitk
     image = sitk.ReadImage(str(input_path))
     result_array = sitk.GetArrayFromImage(image)
