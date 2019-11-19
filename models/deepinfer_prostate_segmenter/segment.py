@@ -17,11 +17,16 @@ OUTPUT_DIR = Path('/output')
 # Define path types
 INPUT_DIR_TYPE = click.Path(exists=True, file_okay=False)
 
+# Domain
+DOMAIN_TYPE = click.Choice(
+    ['BWH_WITH_ERC', 'BWH_WITHOUT_ERC', 'PROMISE12'], case_sensitive=False)
+
 
 @click.command()
 @click.argument('dicom-dir', type=INPUT_DIR_TYPE)
+@click.option('--domain', '-d', default='BWH_WITHOUT_ERC', type=DOMAIN_TYPE)
 @click.option('--debug/--no-debug', default=False, help='put output dirs in mounted volume')
-def main(dicom_dir, debug):
+def main(dicom_dir, domain, debug):
     import arterys
 
     # Custom I/O setup
@@ -39,7 +44,7 @@ def main(dicom_dir, debug):
     cmdline = (
         'python3', '/deepinfer/fit.py',
         '--ModelName', 'prostate-segmenter',
-        '--Domain', 'BWH_WITHOUT_ERC',
+        '--Domain', domain,
         '--InputVolume', input_volume_path,
         '--OutputLabel', output_volume_path,
         '--ProcessingType', 'Accurate',
