@@ -35,7 +35,7 @@ def main(dicom_dir, domain, debug):
     volumes_dir = dicom_dir.parent / VOLUMES_DIR.name if debug else VOLUMES_DIR
     volumes_dir.mkdir(exist_ok=True)
     input_volume_path = volumes_dir / '{}.nrrd'.format(input_name)
-    output_volume_path = volumes_dir / '{}_seg.nrrd'.format(input_name)
+    output_volume_path = volumes_dir / '{}_prostate_seg.nrrd'.format(input_name)
 
     # DICOM to volumes
     arterys.dicomvert(dicom_dir, input_volume_path)
