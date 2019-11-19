@@ -31,7 +31,11 @@ INPUT_DIR_TYPE = click.Path(exists=True, file_okay=False)
     help='remove some labels and small connected components',
 )
 def main(dicom_dir, debug, filter):
+    import torch
     import arterys
+
+    if not torch.cuda.is_available():
+        click.secho('CUDA is not available. Using CPU...', fg='red')
 
     # Custom I/O setup
     dicom_dir = Path(dicom_dir)
@@ -113,4 +117,4 @@ def filter_segmentation(
 
 
 if __name__ == "__main__":
-        sys.exit(main())    # pragma: no cover
+    sys.exit(main())    # pragma: no cover
