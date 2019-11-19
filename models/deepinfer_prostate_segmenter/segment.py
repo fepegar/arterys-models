@@ -24,7 +24,7 @@ DOMAIN_TYPE = click.Choice(
 
 @click.command()
 @click.argument('dicom-dir', type=INPUT_DIR_TYPE)
-@click.option('--domain', '-d', default='BWH_WITHOUT_ERC', type=DOMAIN_TYPE)
+@click.option('--domain', '-d', default='PROMISE12', type=DOMAIN_TYPE)
 @click.option('--debug/--no-debug', default=False, help='put output dirs in mounted volume')
 def main(dicom_dir, domain, debug):
     import arterys
