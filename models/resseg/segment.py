@@ -14,11 +14,11 @@ VOLUMES_DIR = Path('/volumes')
 OUTPUT_DIR = Path('/output')
 
 # Define path types
-INPUT_DIR_TYPE = click.Path(exists=True, file_okay=False)
+INPUT_FILE_TYPE = click.Path(exists=True, dir_okay=False)
 
 
 @click.command()
-@click.argument('dicom-dir', type=INPUT_DIR_TYPE)
+@click.argument('input-file', type=INPUT_FILE_TYPE)
 @click.option(
     '--debug/--no-debug',
     default=False,
@@ -34,14 +34,9 @@ def main(dicom_dir, debug):
 
     # Custom I/O setup
     dicom_dir = Path(dicom_dir)
-    input_name = dicom_dir.name
-    volumes_dir = dicom_dir.parent / VOLUMES_DIR.name if debug else VOLUMES_DIR
+    volumes_dir = input_volume_path.parent / VOLUMES_DIR.name if debug else VOLUMES_DIR
     volumes_dir.mkdir(exist_ok=True)
-    input_volume_path = volumes_dir / '{}.nii.gz'.format(input_name)
-    output_volume_path = volumes_dir / '{}_seg.nii.gz'.format(input_name)
-
-    # DICOM to volumes
-    arterys.dicomvert(dicom_dir, input_volume_path)
+    output_volume_path = volumes_dir / 'resection_seg.nii.gz'
 
     # Run inference
     resseg(
@@ -55,9 +50,9 @@ def main(dicom_dir, debug):
     )
 
     # Volumes to Arterys format
-    output_dir = dicom_dir.parent / OUTPUT_DIR.name if debug else OUTPUT_DIR
+    output_dir = input_volume_path.parent / OUTPUT_DIR.name if debug else OUTPUT_DIR
     output_dir.mkdir(exist_ok=True)
-    arterys.process_output(output_volume_filtered_path, output_dir)
+    arterys.process_output(output_volume_path, output_dir)
 
     return 0
 
