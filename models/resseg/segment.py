@@ -33,6 +33,7 @@ def main(input_file, debug):
         click.secho('CUDA is not available. Using CPU...', fg='red')
 
     # Custom I/O setup
+    input_volume_path = Path(input_file)
     volumes_dir = input_volume_path.parent / VOLUMES_DIR.name if debug else VOLUMES_DIR
     volumes_dir.mkdir(exist_ok=True)
     output_volume_path = volumes_dir / 'resection_seg.nii.gz'
@@ -52,7 +53,7 @@ def main(input_file, debug):
     output_dir = input_volume_path.parent / OUTPUT_DIR.name if debug else OUTPUT_DIR
     output_dir.mkdir(exist_ok=True)
     arterys.process_output(output_volume_path, output_dir)
-
+    a = v
     return 0
 
 
