@@ -42,7 +42,7 @@ def main(input_file, debug):
     resseg(
         input_volume_path,
         output_volume_path,
-        window_size=128,
+        window_size=88,
         window_border=1,
         batch_size=1,
         whole_image=False,
