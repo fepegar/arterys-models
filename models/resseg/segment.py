@@ -53,7 +53,7 @@ def main(input_file, debug):
     output_dir = input_volume_path.parent / OUTPUT_DIR.name if debug else OUTPUT_DIR
     output_dir.mkdir(exist_ok=True)
     arterys.process_output(output_volume_path, output_dir)
-    a = v
+
     return 0
 
 
