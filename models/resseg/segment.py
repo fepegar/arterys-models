@@ -24,7 +24,7 @@ INPUT_FILE_TYPE = click.Path(exists=True, dir_okay=False)
     default=False,
     help='put output dirs in mounted volume',
 )
-def main(dicom_dir, debug):
+def main(input_file, debug):
     import torch
     import arterys
     from resseg import resseg
