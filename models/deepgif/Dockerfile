@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
 # Basic env setup
 COPY . /opt
@@ -16,7 +16,7 @@ RUN conda update -y conda
 RUN conda install python=3.6 -y
 
 # Install libraries
-RUN conda install pytorch -y
+RUN conda install pytorch==1.2.0 cudatoolkit=10.0 -c pytorch -y
 RUN pip install git+https://github.com/fepegar/arterys#egg=arterys
 RUN pip install highresnet==0.10.0
 
