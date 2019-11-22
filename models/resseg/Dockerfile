@@ -18,7 +18,7 @@ RUN conda install python=3.6 -y
 # Install libraries
 RUN conda install pytorch==1.2.0 cudatoolkit=10.0 -c pytorch -y
 RUN pip install git+https://github.com/fepegar/arterys#egg=arterys
-RUN pip install resseg==0.1.0
+RUN pip install resseg==0.2.0
 
 # Print some GPU info
 RUN python -c "import torch; print('CUDA available:', torch.cuda.is_available())"
