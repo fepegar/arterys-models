@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Script to convert a folder with a DICOM series into a volume file."""
+"""Epilepsy resection surgery segmentation."""
 import sys
 import click
 from pathlib import Path
@@ -33,7 +33,6 @@ def main(input_file, debug):
         click.secho('CUDA is not available. Using CPU...', fg='red')
 
     # Custom I/O setup
-    dicom_dir = Path(dicom_dir)
     volumes_dir = input_volume_path.parent / VOLUMES_DIR.name if debug else VOLUMES_DIR
     volumes_dir.mkdir(exist_ok=True)
     output_volume_path = volumes_dir / 'resection_seg.nii.gz'
